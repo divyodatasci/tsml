@@ -143,10 +143,10 @@ public class Experiments  {
 
             String[] classifier = {"HC2"};//"Arsenal", "TDE","DrCIF","RotF",Classifier name: See ClassifierLists for valid options
             ArrayList<String> parameters = new ArrayList<>();
-            parameters.add("-dp=Z:\\ArchiveData\\Univariate_arff\\"); //Where to get datasets
-//            parameters.add("-dp=Z:\\ArchiveData\\Multivariate_arff\\"); //Where to get datasets
-            //parameters.add("-rp=Z:\\Results Working Area\\HC2 Results\\Multivariate\\"); //Where to write results
-            parameters.add("-rp=Z:\\temp\\"); //Where to write results
+            parameters.add("-dp=src/main/java/experiments/data/tsc/"); //Where to get datasets
+//            parameters.add("-dp=Z:ArchiveDataMultivariate_arff"); //Where to get datasets
+            //parameters.add("-rp=Z:Results Working AreaHC2 ResultsMultivariate"); //Where to write results
+            parameters.add("-rp=Temp/"); //Where to write results
             parameters.add("-gtf=true"); //Whether to generate train files or not
             parameters.add("-cn=" + classifier[0]); //Classifier name
             parameters.add("-dn="); //Problem name, don't change here as it is overwritten by probFiles
@@ -174,7 +174,7 @@ public class Experiments  {
              */
             System.out.println("Manually set args:");
             for (String str : settings)
-                System.out.println("\t" + str);
+                System.out.println("t" + str);
             System.out.println("");
 
             boolean threaded = false;
@@ -284,7 +284,7 @@ public class Experiments  {
         }
         catch (Exception e) {
             //todo expand..
-            LOGGER.log(Level.SEVERE, "Experiment failed. Settings: " + expSettings + "\n\nERROR: " + e.toString(), e);
+            LOGGER.log(Level.SEVERE, "Experiment failed. Settings: " + expSettings + "nnERROR: " + e.toString(), e);
             e.printStackTrace();
             return null; //error state
         }
@@ -856,12 +856,12 @@ public class Experiments  {
 
             double d = 1000000000;
             StringBuilder sb = new StringBuilder("BENCHMARK TIMINGS, summary of times to "
-                    + "sort "+repeats+" random int arrays of size "+arrSize+" - in seconds\n");
-            sb.append("total = ").append(total/d).append("\n");
-            sb.append("min = ").append(min/d).append("\n");
-            sb.append("max = ").append(max/d).append("\n");
-            sb.append("mean = ").append(mean/d).append("\n");
-            sb.append("median = ").append(median/d).append("\n");
+                    + "sort "+repeats+" random int arrays of size "+arrSize+" - in secondsn");
+            sb.append("total = ").append(total/d).append("n");
+            sb.append("min = ").append(min/d).append("n");
+            sb.append("max = ").append(max/d).append("n");
+            sb.append("mean = ").append(mean/d).append("n");
+            sb.append("median = ").append(median/d).append("n");
 
             LOGGER.log(Level.FINE, sb.toString());
         }
@@ -893,7 +893,7 @@ public class Experiments  {
         sb.append(",os.name:").append(System.getProperty("os.name", "unknown"));
         sb.append("},ENDSYSTEMPROPERTIES");
 
-        return sb.toString().replace("\n", "NEW_LINE");
+        return sb.toString().replace("n", "NEW_LINE");
     }
 
     public static void writeResults(ExperimentalArguments exp, ClassifierResults results, String fullTestWritingPath, String split) throws Exception {
@@ -1264,7 +1264,7 @@ public class Experiments  {
                     System.err.println("Parsing of arguments failed, parameter information follows after the error. Parameters that require values should have the flag and value separated by '='.");
                     System.err.println("For example: java -jar TimeSeriesClassification.jar -dp=data/path/ -rp=results/path/ -cn=someClassifier -dn=someDataset -f=0");
                     System.err.println("Parameters prefixed by a * are REQUIRED. These are the first five parameters, which are needed to run a basic experiment.");
-                    System.err.println("Error: \n\t" + e + "\n\n");
+                    System.err.println("Error: nt" + e + "nn");
                 }
                 jc.usage();
 //                Thread.sleep(1000); //usage can take a second to print for some reason?... no idea what it's actually doing
@@ -1392,7 +1392,7 @@ public class Experiments  {
             // printing fields via reflection now to avoid cases of forgetting to account for newly added  paras
             for (Field field : ExperimentalArguments.class.getFields()) {
                 try {
-                    sb.append("\n").append(field.getName()).append(": ").append(field.get(this));
+                    sb.append("n").append(field.getName()).append(": ").append(field.get(this));
                 } catch (IllegalAccessException ex) {
                     System.out.println("Fatal, should-be-unreachable exception thrown while printing exp args");
                     System.out.println(ex);
