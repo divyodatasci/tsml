@@ -7,50 +7,63 @@ import tsml.classifiers.dictionary_based.cBOSS;
 import tsml.classifiers.distance_based.ElasticEnsemble;
 import tsml.classifiers.hybrids.HIVE_COTE;
 import tsml.classifiers.interval_based.TSF;
-import tsml.classifiers.shapelet_based.ShapeletTransformClassifier;
+import tsml.data_containers.TimeSeriesInstances;
 import utilities.ClassifierTools;
-import weka.core.Instances;
 
 public class HiveCoteExamples{
 
 
 
     public static void HCComponents1() throws Exception {
-        HIVE_COTE hc = new HIVE_COTE();
-        EnhancedAbstractClassifier[] clf=new EnhancedAbstractClassifier[3];
-        clf[0] = new ElasticEnsemble();
-        clf[1]= new cBOSS();
-        clf[2] = new TSF();
-        String classifier_names[] = {"EE", "cBOSS", "TSF"};
-        hc.setClassifiers(clf,classifier_names,null);
-        int seed = 0;
-        Instances instances[] = DatasetLoading.sampleComputers(seed);
-        hc.setDebug(true);
-        hc.buildClassifier(instances[0]);
-        double accuracy = ClassifierTools.accuracy(instances[1], hc);
-        System.out.println("The accuracy of HIVE_COTE for Computers dataset is "+accuracy);
-    }
-    public static void HCComponents2() throws Exception {
-        HIVE_COTE hc = new HIVE_COTE();
-        EnhancedAbstractClassifier[] clf=new EnhancedAbstractClassifier[3];
-        clf[0] = new ElasticEnsemble();
-        clf[1]= new ShapeletTransformClassifier();
-        clf[2] = new TSF();
-        String classifier_names[] = {"EE", "STC", "TSF"};
-        hc.setClassifiers(clf,classifier_names,null);
-        int seed = 0;
-        Instances instances[] = DatasetLoading.sampleComputers(seed);
-        hc.setDebug(true);
-        hc.buildClassifier(instances[0]);
-        double accuracy = ClassifierTools.accuracy(instances[1], hc);
-        System.out.println("The accuracy of HIVE_COTE for Computers dataset is "+accuracy);
-    }
-    public static void expHIVECOTEconf1Computers() throws Exception {
+       HIVE_COTE hc = new HIVE_COTE();
+       EnhancedAbstractClassifier[] clf=new EnhancedAbstractClassifier[3];
+       clf[0] = new ElasticEnsemble();
+       clf[1]= new cBOSS();
+       clf[2] = new TSF();
+       String classifier_names[] = {"EE", "cBOSS", "TSF"};
+       hc.setClassifiers(clf,classifier_names,null);
+       int seed = 0;
+       TimeSeriesInstances instances[] = DatasetLoading.sampleChinatownTS(seed);
+       hc.setDebug(true);
+       hc.buildClassifier(instances[0]);
+       double accuracy = ClassifierTools.accuracy(instances[1], hc);
+       System.out.println("The accuracy of HIVE_COTE for Computers dataset is "+accuracy);
+   }
+ /* public static void HCComponents2() throws Exception {
+       HIVE_COTE hc = new HIVE_COTE();
+       EnhancedAbstractClassifier[] clf=new EnhancedAbstractClassifier[3];
+       clf[0] = new ElasticEnsemble();
+       clf[1]= new ShapeletTransformClassifier();
+       clf[2] = new TSF();
+       String classifier_names[] = {"EE", "STC", "TSF"};
+       hc.setClassifiers(clf,classifier_names,null);
+       int seed = 0;
+       Instances instances[] = DatasetLoading.sampleComputers(seed);
+       hc.setDebug(true);
+       hc.buildClassifier(instances[0]);
+       double accuracy = ClassifierTools.accuracy(instances[1], hc);
+       System.out.println("The accuracy of HIVE_COTE for Computers dataset is "+accuracy);
+   }*/
+
+    public static void expHIVECOTEconf1conf2() throws Exception {
         String[] settings_1=new String[6];
         settings_1[0]="-dp=src/main/java/experiments/data/tsc/";//Where to get data
         settings_1[1]="-rp=Temp/";//Where to write results
-        settings_1[2]="-cn=HIVE-COTEconf1"; //Classifier name: See ClassifierLists for valid options
-        settings_1[3]="-dn=Wine"; //Problem file,
+        settings_1[2]="-cn=HIVE-COTEconf1conf2"; //Classifier name: See ClassifierLists for valid options
+        settings_1[3]="-dn=Chinatown"; //Problem file,
+        settings_1[4]="-f=1";//Fold number
+        settings_1[5]="-ff=1";//resultsFileFormat
+        Experiments.debug=true;
+        Experiments.ExperimentalArguments expSettings = new Experiments.ExperimentalArguments(settings_1);
+        Experiments.setupAndRunExperiment(expSettings);
+    }
+
+    public static void expHIVECOTEv1() throws Exception {
+        String[] settings_1=new String[6];
+        settings_1[0]="-dp=src/main/java/experiments/data/tsc/";//Where to get data
+        settings_1[1]="-rp=Temp/";//Where to write results
+        settings_1[2]="-cn=HIVE-COTEv1"; //Classifier name: See ClassifierLists for valid options
+        settings_1[3]="-dn=Chinatown"; //Problem file,
         settings_1[4]="-f=1";//Fold number
         settings_1[5]="-ff=1";//resultsFileFormat
         Experiments.debug=true;
@@ -70,12 +83,12 @@ public class HiveCoteExamples{
         Experiments.setupAndRunExperiment(expSettings);
     }
 
-    public static void expHIVECOTEconf2Computers() throws Exception {
+    public static void expHIVECOTEv2() throws Exception {
         String[] settings_2=new String[6];
         settings_2[0]="-dp=src/main/java/experiments/data/tsc/";//Where to get data
         settings_2[1]="-rp=Temp/";//Where to write results
-        settings_2[2]="-cn=HIVE-COTEconf2"; //Classifier name: See ClassifierLists for valid options
-        settings_2[3]="-dn=Computers"; //Problem file,
+        settings_2[2]="-cn=HIVE-COTEv2"; //Classifier name: See ClassifierLists for valid options
+        settings_2[3]="-dn=Chinatown"; //Problem file,
         settings_2[4]="-f=1";//1-Fold Cross Validation
         settings_2[5]="-ff=1";//resultsFileFormat
         Experiments.debug=true;
@@ -101,7 +114,7 @@ public class HiveCoteExamples{
         settings_2[0]="-dp=src/main/java/experiments/data/tsc/";//Where to get data
         settings_2[1]="-rp=Temp/";//Where to write results
         settings_2[2]="-cn=HIVE-COTEconf4"; //Classifier name: See ClassifierLists for valid options
-        settings_2[3]="-dn=Computers"; //Problem file,
+        settings_2[3]="-dn=Chinatown"; //Problem file,
         settings_2[4]="-f=1";//1-Fold Cross Validation
         settings_2[5]="-ff=1";//resultsFileFormat
         Experiments.debug=true;
@@ -185,13 +198,15 @@ public class HiveCoteExamples{
         //HCComponents1();
         //HCComponents2();
         //expRISE();
-        //expHIVECOTEconf1Computers();
+        expHIVECOTEv2();
+        expHIVECOTEv1();
         //expHIVECOTEconf2Computers();
         //expHIVECOTEconf3Computers();
         //expHIVECOTEconf4Computers();
+        //expHIVECOTEconf1conf2();
         //experimentHC1NoCV();
         //experimentHC1With5Fold();
-        experimentHC1();
+        //experimentHC1();
         //expHC2contractTime1Min();
         //expHC2contractTime1Min();
         //expHC2contractTime30Seconds();

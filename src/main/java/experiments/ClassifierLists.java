@@ -360,7 +360,7 @@ public class ClassifierLists {
      */
     public static String[] hybrids= {"HiveCoteAlpha", "FlatCote", "HIVE-COTEv1","HIVE-COTEv2", "catch22", "HC-oob", "HC-cv","HC-cv-pf-stc", "HC-cv-stc", "HCV2-cv",
 //HC 2 variants
-            "HIVE-COTE","HC2","HiveCote", "HIVE-COTEv0", "HIVE-COTEconf1", "HIVE-COTEconf2", "HIVE-COTEconf3", "HIVE-COTEconf4",
+            "HIVE-COTE","HC2","HiveCote", "HIVE-COTEv0","HIVE-COTEconf1conf2", "HIVE-COTEconfa", "HIVE-COTEconfb", "HIVE-COTEconfc", "HIVE-COTEconf1", "HIVE-COTEconf2", "HIVE-COTEconf3", "HIVE-COTEconf4",
             "HC-1", "HC-2", "HC-3", "HC-4", "HC-5", "HC-6", "HC-7", "HC-8", "HC-9", "HC-10", "HC-11", "HC-12",
             "HC-13", "HC-14", "HC-15", "HC-16", "HC-17", "HC-18", "HC-19", "HC-20", "HC-21", "HC-22", "HC-23", "HC-24", "HC-25", "HC-26", "HC2-FromFile"
     };
@@ -389,32 +389,39 @@ public class ClassifierLists {
                 c=hc;
 
                 break;
+
             case "HIVE-COTEv2": case "HiveCote": case "HIVE-COTE":
                 hc=new HIVE_COTE();
                 hc.setSeed(fold);
                 c=hc;
                 break;
-            case "HIVE-COTEconf1":
-                String classifierslist[] = {"EE", "STC", "TSF", "TDE", "Arsenal", "DrCIF"};
+            case "HIVE-COTEconf1conf2":
+                String classifierslist[] = {"STC", "TSF","cBOSS", "RISE", "TDE", "Arsenal", "DrCIF"};
                 hc=new HIVE_COTE(classifierslist);
                 hc.setSeed(fold);
                 c=hc;
                 break;
-            case "HIVE-COTEconf2":
-                String classifierslist2[]  = {"EE", "STC", "TSF"};
-                hc=new HIVE_COTE(classifierslist2);
+            case "HIVE-COTEconfa":
+                String classifierslistA[]  = {"STC", "TSF", "cBOSS"};
+                hc=new HIVE_COTE(classifierslistA);
                 hc.setSeed(fold);
                 c=hc;
                 break;
-            case "HIVE-COTEconf3":
-                String classifierslist3[] = {"EE", "TSF"};
-                hc=new HIVE_COTE(classifierslist3);
+            case "HIVE-COTEconfb":
+                String classifierslist5[] = {"cBOSS", "RISE", "STC"};
+                hc=new HIVE_COTE(classifierslist5);
                 hc.setSeed(fold);
                 c=hc;
                 break;
-            case "HIVE-COTEconf4":
-                String classifierslist4[] = {"EE", "RISE"};
-                hc=new HIVE_COTE(classifierslist4);
+            case "HIVE-COTEconfc":
+                String classifierslist6[] = {"TSF", "cBOSS", "RISE"};
+                hc=new HIVE_COTE(classifierslist6);
+                hc.setSeed(fold);
+                c=hc;
+                break;
+            case "HIVE-COTEconfd":
+                String classifierslist7[] = {"STC", "TSF", "RISE"};
+                hc=new HIVE_COTE(classifierslist7);
                 hc.setSeed(fold);
                 c=hc;
                 break;
@@ -579,7 +586,6 @@ public class ClassifierLists {
                 c=hc;
                 break;
             case "HC-12":
-                System.out.println("I reached HC-12");
                 hc=new HIVE_COTE();
                 hc.setBuildIndividualsFromResultsFiles(true);
                 hc.setSeed(fold);

@@ -30,11 +30,11 @@ import tsml.classifiers.Tuneable;
 import tsml.classifiers.dictionary_based.BOSS;
 import tsml.classifiers.dictionary_based.TDE;
 import tsml.classifiers.dictionary_based.cBOSS;
-import tsml.classifiers.distance_based.ElasticEnsemble;
+import tsml.classifiers.distance_based.elastic_ensemble.ElasticEnsemble;
 import tsml.classifiers.interval_based.DrCIF;
 import tsml.classifiers.interval_based.TSF;
 import tsml.classifiers.kernel_based.Arsenal;
-import tsml.classifiers.legacy.RISE;
+import tsml.classifiers.interval_based.RISE;
 import tsml.classifiers.shapelet_based.ShapeletTransformClassifier;
 import tsml.data_containers.TimeSeriesInstances;
 import tsml.data_containers.utilities.Converter;
@@ -99,6 +99,13 @@ public class HIVE_COTE extends AbstractEnsemble implements TechnicalInformationH
         super();
         setupHIVE_COTE_2_0();
     }
+    public HIVE_COTE( String classifierList []) {
+        super();
+        setupHIVE_COTEConfigured(classifierList);
+    }
+
+
+
     @Override
     public void setupDefaultEnsembleSettings() {
         setupHIVE_COTE_1_0();
@@ -209,7 +216,79 @@ public class HIVE_COTE extends AbstractEnsemble implements TechnicalInformationH
             setTrainTimeLimit(contractTrainTimeUnit, trainContractTimeNanos);
     }
 
+    private void setupHIVE_COTEConfigured(String[] classifierList) {
+        this.ensembleName = "HIVE-COTE Configured";
+        this.weightingScheme = new TrainAcc(4);
+        this.votingScheme = new MajorityConfidence();
+        this.transform = null;
+        CrossValidationEvaluator cv = new CrossValidationEvaluator(seed, false, false, false, false);
+        cv.setNumFolds(10);
+        this.trainEstimator = cv;
+        ShapeletTransformClassifier stc = new ShapeletTransformClassifier();
+        DrCIF cif= new DrCIF();
+        Arsenal afc = new Arsenal();
+        TDE tde= new TDE();
+        RISE rise = new RISE();
+        TSF tsf = new TSF();
+        BOSS boss = new BOSS();
+        cBOSS cBoss = new cBOSS();
+        int totalClassifiers = classifierList.length;
 
+        String[] classifierNames = new String[totalClassifiers];
+        EnhancedAbstractClassifier[] classifiers = new EnhancedAbstractClassifier[totalClassifiers];
+
+        for(int i=0; i< totalClassifiers; i++){
+            switch (classifierList[i]){
+                case "STC":
+                    classifiers[i] = stc;
+                    classifierNames[i] = "STC";
+                    break;
+                case "RISE":
+                    classifiers[i] = rise;
+                    classifierNames[i] = "RISE";
+                    break;
+                case "BOSS":
+                    classifiers[i] = boss;
+                    classifierNames[i] = "BOSS";
+                    break;
+                case "cBOSS":
+                    classifiers[i] = cBoss;
+                    classifierNames[i] = "cBOSS";
+                    break;
+                case "TSF":
+                    classifiers[i] = tsf;
+                    classifierNames[i] = "TSF";
+                    break;
+                case "DrCIF":
+                    classifiers[i] = cif;
+                    classifierNames[i]="DrCIF";
+                    break;
+                case "Arsenal":
+                    classifiers[i] = afc;
+                    classifierNames[i]="Arsenal";
+                    break;
+                case "TDE":
+                    classifiers[i] = tde;
+                    classifierNames[i]="TDE";
+                    break;
+            }
+        }
+        for(EnhancedAbstractClassifier cls:classifiers) {
+            cls.setEstimateOwnPerformance(true);
+            cls.setTrainEstimateMethod(TrainEstimateMethod.OOB);
+        }
+        try {
+            setClassifiers(classifiers, classifierNames, null);
+        } catch (Exception e) {
+            System.out.println("Exception thrown when setting up DEFAULT settings of " + this.getClass().getSimpleName() + ". Should "
+                    + "be fixed before continuing");
+            System.exit(1);
+        }
+        setSeed(seed);
+        if(trainTimeContract)
+            setTrainTimeLimit(contractTrainTimeUnit, trainContractTimeNanos);
+            setTrainTimeLimit(contractTrainTimeUnit, trainContractTimeNanos);
+    }
 
     public void setupHIVE_COTE_2_0() {
         this.ensembleName = "HIVE-COTE 2.0";
